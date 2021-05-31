@@ -1,7 +1,22 @@
-import '../styles/globals.css'
+import { createMuiTheme, CssBaseline, MuiThemeProvider } from "@material-ui/core"
+import { orange } from "@material-ui/core/colors"
+import { AuthProvider } from "../firebase/auth"
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+const myTheme = createMuiTheme({
+  status: {
+    danger: orange[500],
+  }
+})
+
+function IESignatureApp({ Component, pageProps }) {
+  return (
+    <MuiThemeProvider theme={myTheme}>
+      <CssBaseline />
+      <AuthProvider>
+        <Component {...pageProps} />
+      </AuthProvider>
+    </MuiThemeProvider>
+  )
 }
 
-export default MyApp
+export default IESignatureApp
