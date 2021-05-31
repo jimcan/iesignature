@@ -1,22 +1,37 @@
-import { createMuiTheme, CssBaseline, MuiThemeProvider } from "@material-ui/core"
-import { orange } from "@material-ui/core/colors"
-import { AuthProvider } from "../firebase/auth"
+import React from 'react';
+import PropTypes from 'prop-types';
+import Head from 'next/head';
+import { ThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import theme from '../src/theme';
 
-const myTheme = createMuiTheme({
-  status: {
-    danger: orange[500],
-  }
-})
+export default function MyApp(props) {
+  const { Component, pageProps } = props;
 
-function IESignatureApp({ Component, pageProps }) {
+  React.useEffect(() => {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentElement.removeChild(jssStyles);
+    }
+  }, []);
+
   return (
-    <MuiThemeProvider theme={myTheme}>
-      <CssBaseline />
-      <AuthProvider>
+    <React.Fragment>
+      <Head>
+        <title>IE Signature</title>
+        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
+      </Head>
+      <ThemeProvider theme={theme}>
+        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+        <CssBaseline />
         <Component {...pageProps} />
-      </AuthProvider>
-    </MuiThemeProvider>
-  )
+      </ThemeProvider>
+    </React.Fragment>
+  );
 }
 
-export default IESignatureApp
+MyApp.propTypes = {
+  Component: PropTypes.elementType.isRequired,
+  pageProps: PropTypes.object.isRequired,
+};
